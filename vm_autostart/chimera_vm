@@ -63,13 +63,17 @@ run_vm() {
 
 		_bhyve_rc=0
 		bhyve \
-			-A -H -P -w \
-			-c sockets=1,cores=1,threads=1 \
-			-m 2G \
-			-l bootrom,/usr/local/share/uefi-firmware/BHYVE_BHF_UEFI.fd,fwcfg=qemu \
+			-A -H -P -S -w \
+			-c sockets=1,cores=4,threads=1 \
+			-m 10G \
+			-l bootrom,/usr/local/share/uefi-firmware/BHYVE_BHF_UEFI.fd,/vms/chimera_vm/EFI_VARS.fd,fwcfg=qemu \
 			-s 0,hostbridge \
-			-s 2,fbuf,rfb=0.0.0.0:"${vm_vnc_port}",w=1280,h=1024 \
-			-s 3,xhci,tablet \
+			-s 2,passthru,0/2/0 \
+			-s 3,passthru,0/20/0 \
+			-s 10,nvme,/dev/zvol/zroot/vms/chimera_vm/disk0 \
+			-s 15,ahci-cd,/vms/ubuntu-installer.iso,ro \
+			-s 20,virtio-net,tap0 \
+			-s 21,virtio-net,tap1 \
 			-s 31,lpc \
 			"${vm_name}" || _bhyve_rc=$?
 
@@ -100,7 +104,7 @@ if test "$(id -u)" -ne 0; then
 fi
 
 # Default values for VM configuration
-readonly vm_name="samplevm"
+readonly vm_name="chimera_vm"
 readonly vm_vnc_port="5900"
 readonly _cmd="${1?Error: No COMMAND specified$(usage)}"
 

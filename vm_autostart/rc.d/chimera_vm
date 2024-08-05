@@ -9,7 +9,7 @@
 
 . /etc/rc.subr
 
-name="samplevm"
+name="chimera_vm"
 rcvar="${name}_enable"
 
 command="/usr/local/bin/${name}"
