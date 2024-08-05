@@ -29,12 +29,12 @@ doas ifconfig tap create
 
 # setup network
 doas ifconfig bridge0 addm em0 addm tap0 up
-doas ifconfig bridge1 addm igc0 addm tap1 up
+doas ifconfig bridge1 addm igc2 addm tap1 up
 
 # create at system startup
 doas sysrc cloned_interfaces+="bridge0 tap0 bridge1 tap1"
 doas sysrc ifconfig_bridge0="addm em0 addm tap0 up"
-doas sysrc ifconfig_bridge1="addm igc0 addm tap1 up"
+doas sysrc ifconfig_bridge1="addm igc2 addm tap1 up"
 ```
 
 3. Autostart VM (chapter 10.4)
