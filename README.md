@@ -1,15 +1,47 @@
 # About this repository
 
-This repository contains sample code for TwinCAT/BSD Hypervisor offered by [Beckhoff Automation](https://www.beckhoff.com).
-The sample code is provided as-is under the Zero-Clause BSD license.
+This repository is forked from the [Beckhoff TwinCAT/BSD Hypervisor repository](https://github.com/Beckhoff/TCBSD_Hypervisor_Samples). The files are adapted for the EV BDL at Circu Li-ion.
 
-# How to get support
+## Getting started
 
-This repo accomplishes the TwinCAT/BSD Hypervisor documentation under [infosys.beckhoff.com](https://infosys.beckhoff.com/english.php?content=../content/1033/twincat_bsd/index.html&id=6233294928143560387).
+1. Clone this repository onto the IPC home directory.
 
-Should you have any questions regarding the provided sample code, please contact your local Beckhoff support team.
-Contact information can be found on the official Beckhoff website at https://www.beckhoff.com/contact/.
+The following steps are adapted from the [official documentation](https://download.beckhoff.com/download/Document/ipc/embedded-pc/embedded-pc-cx/TwinCAT_BSD_en.pdf)
 
-# Further information
+2. Setup VM files (chapter 10.11 Steps 1-4)
+``` console
+doas zfs create -p -o mountpoint=/vms/chimera_vm zroot/vms/chimera_vm
+doas fetch -o /vms/ubuntu-installer.iso https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso
+doas zfs create -V 20G zroot/vms/chimera_vm/disk0
+doas cp /usr/local/share/uefi-firmware/BHYVE_BHF_UEFI_VARS.fd /vms/chimera_vm/EFI_VARS.fd
+```
 
-Further information about this sample code can be found on the [Beckhoff Information System](https://infosys.beckhoff.com) in the [TwinCAT/BSD Hypervisor section](https://infosys.beckhoff.com/english.php?content=../content/1033/twincat_bsd/index.html&id=6233294928143560387).
+3. Setup network (chapter 10.11 Step 5 + chapter 10.9.3)
+
+``` console
+# bridge0/tap0 - connects VM to internet
+doas ifconfig bridge create
+doas ifconfig tap create
+
+# bridge1/tap1 - connects VM to 
+doas ifconfig bridge create
+doas ifconfig tap create
+
+# setup network
+doas ifconfig bridge0 addm em0 addm tap0 up
+doas ifconfig bridge1 addm igc0 addm tap1 up
+
+# create at system startup
+doas sysrc cloned_interfaces+="bridge0 tap0 bridge1 tap1"
+doas sysrc ifconfig_bridge0="addm em0 addm tap0 up"
+doas sysrc ifconfig_bridge1="addm igc0 addm tap1 up"
+```
+
+3. Autostart VM (chapter 10.4)
+
+```console
+cd ~/TCBSD_Hypervisor/vm_autostart
+doas make
+doas service chimera_vm enable
+doas service chimera_vm start
+```
