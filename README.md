@@ -12,7 +12,7 @@ The following steps are adapted from the [official documentation](https://downlo
 ``` console
 doas zfs create -p -o mountpoint=/vms/chimera_vm zroot/vms/chimera_vm
 doas fetch -o /vms/ubuntu-installer.iso https://releases.ubuntu.com/24.04/ubuntu-24.04-desktop-amd64.iso
-doas zfs create -V 20G zroot/vms/chimera_vm/disk0
+doas zfs create -V 50G zroot/vms/chimera_vm/disk0
 doas cp /usr/local/share/uefi-firmware/BHYVE_BHF_UEFI_VARS.fd /vms/chimera_vm/EFI_VARS.fd
 ```
 
