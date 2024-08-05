@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: 0BSD
 # Copyright (C) 2019 - 2022 Beckhoff Automation GmbH & Co. KG
 
-# PROVIDE: samplevm
+# PROVIDE: chimera_vm
 # REQUIRE: DAEMON NETWORKING dmesg
 # BEFORE: LOGIN TcSystemService
 # KEYWORD: nojail shutdown
