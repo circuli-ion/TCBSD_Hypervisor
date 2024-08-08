@@ -5,7 +5,7 @@ RCDIR=$(DESTDIR)$(PREFIX)/etc/rc.d
 INSTALL=/usr/bin/install
 MKDIR=/bin/mkdir
 
-SCRIPT=samplevm
+SCRIPT=chimera_vm
 
 install:
 	$(MKDIR) -p $(BINDIR)

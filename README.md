@@ -37,6 +37,13 @@ doas sysrc ifconfig_bridge0="addm em0 addm tap0 up"
 doas sysrc ifconfig_bridge1="addm igc2 addm tap1 up"
 ```
 
+4. PCI device passthrough (chapter 10.10)
+
+````
+doas devctl set driver -f pci0:0:2:0 ppt
+doas devctl set driver -f pci0:0:20:0 ppt
+```
+
 3. Autostart VM (chapter 10.4)
 
 ```console
@@ -45,3 +52,21 @@ doas make
 doas service chimera_vm enable
 doas service chimera_vm start
 ```
+
+4. Enable ssh (inside VM)
+
+``` console
+sudo apt update
+sudo apt install openssh-server -y
+```
+
+## Backup & Restore
+
+```
+doas snapshot zfs zroot/vms/chimera_vm/disk0@latest
+doas zfs send zroot/vms/chimera_vm/disk0@latest > /tmp/YYMMDD_chimera_vm.zfs
+```
+
+Then backup to external storage
+
+Restore: Refer to manual
