@@ -65,7 +65,7 @@ run_vm() {
 		bhyve \
 			-A -H -P -S -w \
 			-c sockets=1,cores=4,threads=1 \
-			-m 10G \
+			-m 100G \
 			-l bootrom,/usr/local/share/uefi-firmware/BHYVE_BHF_UEFI.fd,/vms/chimera_vm/EFI_VARS.fd,fwcfg=qemu \
 			-s 0,hostbridge \
 			-s 2,passthru,0/2/0 \
